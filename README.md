@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Magic The Gathering - Cartas Substitutas (Deck Builder Tool)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### Esse projeto foi desenvolvido em React usando as libs de Styled Components e Axios, consumindo a API do Magic The Gathering em https://docs.magicthegathering.io/#documentationgetting_started 
 
-## Available Scripts
 
-In the project directory, you can run:
+## Introdução
 
-### `npm start`
+Esse projeto foi desenvolvido como uma ferramenta simples para ajudar jogadores a construirem seus decks. Muitas vezes é comum consultarmos listas de decks em sites e precisar de cartas específicas, mas não ser possível comprá-las no momento. Nesse sentido a ferramenta auxilia a encontrar cartas substitutas que mantenham de alguma forma o balanceamento do Deck.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Dados da carta (GET - Request)
 
-### `npm test`
+Utilizando a API do Magic, o app possibilita trazer as informações da carta procurando pelo nome. É feito um Get Request no endpoint da API usando o Parâmetro de Nome e o próprio App cuida de todo o parsing do texto digitado.
+Vale apontar que a caixa de texto aceita pressionar enter para enviar o comando de busca, pensando na experiência de usuário.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Os parâmetros retornados são:
+- Nome da carta
+- Custo de invocar
+- Cor
+- Tipo Principal
+- Poder
+- Resistência
+- Poderes
+- Raridade
 
-### `npm run build`
+![alt text](https://github.com/tiagosestari/magicAPI---Cartas-Substitutas/blob/master/src/imgs/telacarta.PNG)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Cartas Substitutas (GET - Request 2)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+O segundo botão faz um novo Get Request no mesmo endpoint, mas usa os parâmetros Cor e Tipo Principal que foram salvos no estado da aplicação quando no primeiro processo.
+Assim, retorna uma lista com 100 cartas que sejam da mesmo cor e do mesmo tipo.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Essa lista pode ser filtrada por:
+- Poder (diferença máxima de +1 ou -1)
+- Resistência (diferença máxima de +1 ou -1)
+- Custo de Mana (diferença máxima de +1 ou -1)
+- Raridade (igual a da carta)
 
-### `npm run eject`
+![alt text](https://github.com/tiagosestari/magicAPI---Cartas-Substitutas/blob/master/src/imgs/telasemfiltros.PNG)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Assim, é possível filtrar a lista de acordo com o que for mais importante para a estratégia do seu deck. Se for manter o custo médio de invocar, pode filtrar por Custo de Mana, se o principal for a força das cartas, essa pode ser a variável, se for necessário trazer cartas que preservem o custo de mana e a resistência pois está utilizando uma estratégia de levantar rapidamente defesas baratas, os dois filtros atuaram em conjunto.  
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![alt text](https://github.com/tiagosestari/magicAPI---Cartas-Substitutas/blob/master/src/imgs/telafiltros.PNG)

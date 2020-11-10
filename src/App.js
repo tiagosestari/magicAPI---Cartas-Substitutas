@@ -5,7 +5,57 @@ import Carta from './components/Carta'
 import './App.css';
 import axios from 'axios';
 import CartasSub from './components/CartasSub';
+import Filtros from './components/Filtros'
+import CardBack from './imgs/card-back.jpg'
+import logo from './imgs/logo-bg.png'
 
+//rgb(226, 25, 9) - vermelho
+
+const Buttons = Styled.button`
+display: inline-block;
+padding: 0.35em 1.2em;
+border:0.1em solid #FFFFFF;
+margin:0.2em 0.3em;
+border-radius:0.12em;
+box-sizing: border-box;
+text-decoration:none;
+font-family:'Roboto',sans-serif;
+font-weight:300;
+color:#FFFFFF;
+text-align:center;
+transition: all 0.2s;
+background-color: rgba(226,25,9, 0.4);
+&:hover {
+color: rgba(226,25,9, 0.4);
+border: 0.1em solid rgba(226,25,9, 0.4);
+background-color: #FFFFFF;
+}
+`
+
+const Logo = Styled.img`
+width: 80%;
+`
+
+const Header = Styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 50%;
+margin: 0 25%;
+`
+
+const SearchBar = Styled.div`
+width: 80%;
+display: flex;
+justify-content: space-between;
+`
+const Bar = Styled.input`
+flex-grow: 1;
+background-color: rgba(255, 255, 255, 0.5);
+color: white;
+font-size: 1.2em;
+margin: 0 0.2em;
+`
 
 
 class App extends React.Component {
@@ -24,13 +74,14 @@ class App extends React.Component {
     resistencia: 0,
     texto: "",
     raridade: "",
-    foto: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129459&type=card",
+    foto: `${CardBack}`,
 
 
     cartasSub: [],
     poderFiltro: false,
     resistenciaFiltro: false,
-    manaFiltro: false
+    manaFiltro: false,
+    raridadeFiltro: false
     
   }
 
@@ -64,6 +115,18 @@ class App extends React.Component {
   onChangeFiltroMana = () => {
     this.setState({manaFiltro: !this.state.manaFiltro})
     
+  }
+
+  onChangeFiltroRaridade = () => {
+    this.setState({raridadeFiltro: !this.state.raridadeFiltro})
+    
+  }
+
+  pressionouEnter = (event) => {
+    if(event.keyCode === 13) {
+      //console.log(event.keyCode)
+      this.searchCard()
+    } else {return true}
   }
   
   searchCard = () => {
@@ -100,13 +163,14 @@ class App extends React.Component {
 
   }
 
-    filtrarLista = () => {
+  filtrarLista = () => {
 
       return this.state.cartasSub.filter((carta) => {
         
         let poder;
         let resistencia;
         let mana;
+        let raridade;
 
         if(this.state.poderFiltro) {
           if(Number(carta.power) < Number(this.state.poder) + 2 && Number(carta.power) > Number(this.state.poder) - 2) {
@@ -126,7 +190,13 @@ class App extends React.Component {
           } else {mana = false}
         } else {mana = true}
 
-        return (poder&&resistencia&&mana);
+        if(this.state.raridadeFiltro) {
+          if(carta.rarity === this.state.raridade) {
+            raridade = true
+          } else {raridade = false}
+        } else {raridade = true}
+
+        return (poder&&resistencia&&mana&&raridade);
       
       })
       
@@ -140,9 +210,17 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        
-        <input type="text" value={this.state.nameQuery} onChange={this.onchangenamequery}></input>
-        <button onClick={this.searchCard}> Search </button>
+
+        <Header>
+          <h1>Substituição de Cartas</h1>
+          
+          <Logo src={logo} />
+          
+          <SearchBar>
+          <Bar type="text" value={this.state.nameQuery} onChange={this.onchangenamequery} onKeyUp={this.pressionouEnter} />
+          <Buttons onClick={this.searchCard} > Procurar Carta </Buttons>
+          </SearchBar>
+        </Header>
 
         <Carta 
           nome={this.state.nome}
@@ -156,17 +234,16 @@ class App extends React.Component {
           foto={this.state.foto}
         />
 
-        <button onClick={this.lookForSubs}> Search for Subs</button>
+        <Buttons onClick={this.lookForSubs}> Procurar Cartas Substitutas</Buttons>
 
         <br />
         
-        <h2>Filtros:</h2>
-        <input type="checkbox" name="poder" onChange={this.onChangeFiltroPoder} />
-        <label for="poder">Poder</label>
-        <input type="checkbox" name="resistencia" onChange={this.onChangeFiltroResistencia}/>
-        <label for="resistencia">Resistência</label>
-        <input type="checkbox" name="custo-de-mana" onChange={this.onChangeFiltroMana} />
-        <label for="custo-de-mana">Custo de Mana</label>
+      <Filtros
+        poderfiltro={this.onChangeFiltroPoder} 
+        resistenciafiltro={this.onChangeFiltroResistencia}
+        manafiltro={this.onChangeFiltroMana}
+        rarityfiltro={this.onChangeFiltroRaridade}
+      />
 
         <CartasSub cartassub={listaFiltrada} />
       

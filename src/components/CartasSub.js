@@ -15,7 +15,7 @@ grid-template-rows: 1fr;
 grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 margin: 0.2em 1em;
 text-align: left;
-border: 1px solid black;
+border: 1px solid white;
 `
 
 const Item = Styled.td`
@@ -35,6 +35,19 @@ class CartasSub extends React.Component {
         <div className="Carta">
 
         <TabelaDeCartasSub>
+          
+          <LinhaTabelaDeCartasSub>
+                      <Item>Nome</Item>
+                      <Item>Custo de Mana</Item>
+                      <Item>Cores</Item>
+                      <Item>Tipo Principal</Item>
+                      <Item>Poder</Item>
+                      <Item>Resistência</Item>
+                      
+                      <Item>Raridade</Item>
+
+            </LinhaTabelaDeCartasSub>
+
             {this.props.cartassub.map((carta) => {
 
               return (

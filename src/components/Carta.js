@@ -6,6 +6,10 @@ display: flex;
 justify-content: space-evenly;
 margin: 2em 1em;
 text-align: left;
+font-size: 2em;
+padding: 1em 1em;
+border-radius: 50px;
+background-color: rgba(255, 255, 255, 0.2);
 `
 
 class Carta extends React.Component {
